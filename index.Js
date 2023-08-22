@@ -10,6 +10,8 @@ $(document).keypress(() => {
     $("#level-title").text(`Level ${level}`);
     nextSequence();
     started = true;
+    
+    
   }
 });
 
@@ -22,16 +24,22 @@ $(".btn").click(function () {
 });
 
 function checkAnswer(currentLevel) {
-  if (level < 100) {
     if (userClicksPattern[currentLevel] === gamePattern[currentLevel]) {
       if (userClicksPattern.length === gamePattern.length) {
-        level < 50
-          ? setTimeout(() => {
-              nextSequence();
-            }, 1000)
-          : setTimeout(() => {
-              nextSequence();
-            }, 50);
+         if(level===101){
+          $("body").addClass("game-won");
+          playSound("win");
+          $("#level-title").text("Congratulations!, You finished the game 🏆");
+          setTimeout(() => {
+            $("body").removeClass("game-won");
+          }, 200);
+          startOver();
+        }else{
+          setTimeout(()=>{
+            nextSequence()
+          },1000)
+        }
+         
       }
     } else {
       $("body").addClass("game-over");
@@ -43,17 +51,9 @@ function checkAnswer(currentLevel) {
       }, 200);
       startOver();
     }
-  } else {
-    $("body").addClass("game-won");
-    playSound("win");
-    $("#level-title").text("Congratulations!, You finished the game 🏆");
+  } 
+   
 
-    setTimeout(() => {
-      $("body").removeClass("game-win");
-    }, 200);
-    startOver();
-  }
-}
 
 function nextSequence() {
   userClicksPattern = [];
